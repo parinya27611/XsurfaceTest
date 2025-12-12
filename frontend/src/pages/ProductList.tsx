@@ -127,13 +127,13 @@ const UploadBtn = styled(Link)`
 const ProductsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 0 50px;
-  gap: 10px;
+  gap: 20px;
 
   @media (min-width: 550px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 680px) {
+  @media (min-width: 760px) {
+    gap: 10px;
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -152,11 +152,12 @@ const ProductsGrid = styled.div`
 `;
 
 const Card = styled.div`
-  position: relative;
   display: flex;
   padding: 10px;
   position: relative;
   justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const CardLink = styled(Link)`
@@ -172,6 +173,18 @@ const CardLink = styled(Link)`
   &:hover img {
     opacity: 0.7;
   }
+
+  @media (max-width: 520px) {
+    max-width: 180px;
+  }
+
+  @media (max-width: 460px) {
+    max-width: 160px;
+  }
+
+  @media (max-width: 400px) {
+    max-width: 120px;
+  }
 `;
 const GroupButton = styled.div`
   z-index: 1;
@@ -183,6 +196,18 @@ const GroupButton = styled.div`
   transform: translate(50%, 0px);
   display: flex;
   justify-content: flex-end;
+
+  @media (max-width: 520px) {
+    max-width: 180px;
+  }
+
+  @media (max-width: 460px) {
+    max-width: 160px;
+  }
+
+  @media (max-width: 400px) {
+    max-width: 120px;
+  }
 `;
 const EditBtn = styled.div`
   width: 24px;

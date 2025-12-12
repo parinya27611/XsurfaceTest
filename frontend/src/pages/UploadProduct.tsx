@@ -316,7 +316,7 @@ const UploadProduct = () => {
     if (!files) return;
 
     const allowed = ["image/jpeg", "image/png"];
-    const MAX_SIZE = 50 * 1024 * 1024;
+    const MAX_SIZE = 10 * 1024 * 1024;
 
     const fileArray = Array.from(files);
 
@@ -493,7 +493,7 @@ const UploadProduct = () => {
             </DragDrop>
 
             <BrowseLabel>
-              <span>JPG. or PNG Maximum file size 50MB.</span>
+              <span>JPG. or PNG Maximum file size 10MB.</span>
             </BrowseLabel>
           </DropZone>
           <RequestText>
