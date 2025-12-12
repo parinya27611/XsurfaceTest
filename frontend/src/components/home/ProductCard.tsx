@@ -120,11 +120,13 @@ const Type = styled.div`
   font-size: 0.65rem;
   color: #6c6c70;
 `;
+
 const Size = styled.div`
   font-weight: 400;
   font-size: 0.75rem;
   color: #252525;
 `;
+
 const Discount = styled.div`
   font-weight: 400;
   font-size: 0.65rem;
@@ -156,14 +158,12 @@ const InStock = styled.div`
 `;
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const API_BASE = import.meta.env.VITE_API_BASE;
-
   return (
     <CardLink to={`/product-list/${product._id}`}>
       <Card>
         <ImageWrapper>
           <Image
-            src={product.images?.[0] ? `${API_BASE}${product.images[0]}` : ""}
+            src={product.images?.[0] ? product.images[0] : ""}
             alt={product.name}
             loading="lazy"
           />

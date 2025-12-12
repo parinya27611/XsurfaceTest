@@ -216,8 +216,6 @@ const BackLink = styled(Link)`
 `;
 
 const ProductDetail = () => {
-  const API_BASE = import.meta.env.VITE_API_BASE;
-
   const [product, setProduct] = useState<Product>();
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -273,7 +271,7 @@ const ProductDetail = () => {
         </BackLink>
         <MainImage>
           <img
-            src={`${API_BASE}${product.images[selectedImage]}`}
+            src={product.images[selectedImage]}
             alt={product.name}
             loading="lazy"
           />
@@ -289,7 +287,7 @@ const ProductDetail = () => {
               onClick={() => setSelectedImage(index)}
             >
               <img
-                src={`${API_BASE}${image}`}
+                src={image}
                 alt={`${product.name} ${index + 1}`}
                 loading="lazy"
               />

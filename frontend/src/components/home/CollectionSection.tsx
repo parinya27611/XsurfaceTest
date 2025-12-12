@@ -299,8 +299,6 @@ const CollectionSection = ({
   products = [],
   viewAllLink,
 }: CollectionSectionProps) => {
-  const API_BASE = import.meta.env.VITE_API_BASE;
-
   const settings = {
     dots: true,
     infinite: true,
@@ -354,7 +352,7 @@ const CollectionSection = ({
                             <Image
                               src={
                                 product.images?.[0]
-                                  ? `${API_BASE}${product.images[0]}`
+                                  ? `${product.images[0]}`
                                   : ""
                               }
                               alt={product.name}

@@ -206,8 +206,6 @@ const LastView = ({ title, products = [] }: LastViewProps) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const API_BASE = import.meta.env.VITE_API_BASE;
-
   const settings = {
     dots: true,
     infinite: false,
@@ -247,11 +245,7 @@ const LastView = ({ title, products = [] }: LastViewProps) => {
                 <Card>
                   <ImageWrapper>
                     <Image
-                      src={
-                        product.images?.[0]
-                          ? `${API_BASE}${product.images[0]}`
-                          : ""
-                      }
+                      src={product.images?.[0] ? product.images[0] : ""}
                       alt={product.name}
                       loading="lazy"
                     />

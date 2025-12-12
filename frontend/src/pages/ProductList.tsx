@@ -330,7 +330,6 @@ const ProductList = () => {
     autoplaySpeed: 10000,
     arrows: false,
   };
-  const API_BASE = import.meta.env.VITE_API_BASE;
   const navigate = useNavigate();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -437,7 +436,7 @@ const ProductList = () => {
                     {product.images.map((image, imgIndex) => (
                       <Slide key={`${image}-${imgIndex}`}>
                         <SlideImage
-                          src={`${API_BASE}${image}`}
+                          src={image}
                           alt={`${product.name} ${imgIndex + 1}`}
                           loading="lazy"
                         />

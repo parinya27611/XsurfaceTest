@@ -78,11 +78,10 @@ const RequestText = styled.p`
 `;
 
 const PreviewGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin: 0 auto;
-  justify-items: center;
   width: 100%;
 
   @media (max-width: 620px) {
@@ -292,7 +291,6 @@ const SecondaryButton = styled(Link)`
 
 const UploadProduct = () => {
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_BASE;
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -444,7 +442,7 @@ const UploadProduct = () => {
       }
     };
     fetchData();
-  }, [id, API_BASE]);
+  }, [id]);
 
   return (
     <Main>
@@ -498,7 +496,7 @@ const UploadProduct = () => {
             formData.images?.map((image, index) => (
               <PreviewItem key={`${image}-${index}`}>
                 <PreviewImage
-                  src={`${API_BASE}${image}`}
+                  src={image}
                   alt={`Upload ${index + 1}`}
                   loading="lazy"
                 />
