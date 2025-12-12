@@ -26,7 +26,7 @@ const Logo = styled.img`
 const Title = styled.h2`
   margin: 30px 0 30px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.87rem;
   text-align: center;
   color: #ffffff;
 `;
@@ -34,17 +34,18 @@ const Title = styled.h2`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr;
-  gap: 50px;
+  gap: 20px;
 
   @media (min-width: 768px) {
     grid-template-columns: 2fr 4fr 3fr;
+    gap: 50px;
   }
 `;
 
 const SectionTitle = styled.h3`
   margin-bottom: 15px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.87rem;
 `;
 
 const List = styled.ul`
@@ -52,6 +53,7 @@ const List = styled.ul`
   flex-direction: column;
   gap: 20px;
   padding: 0;
+  font-size: 0.87rem;
 
   li,
   a {
@@ -84,11 +86,12 @@ const ButtonLink = styled(Link)`
   background: #e13b30;
   color: #fff;
   transition: background 0.2s;
-  width: 295px;
+  max-width: 295px;
+  width: 100%;
   height: 37px;
   border-radius: 20px;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.87rem;
   text-decoration: none;
 
   &:hover {
@@ -117,12 +120,12 @@ const Divider = styled.div`
   color: #8e8e93;
   text-align: center;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.87rem;
   margin-top: 10px;
 
   span {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.87rem;
     color: #fff;
   }
 `;
@@ -130,7 +133,7 @@ const Divider = styled.div`
 const SubDivider = styled.div`
   color: #8e8e93;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-top: 20px;
   display: flex;
   justify-content: center;

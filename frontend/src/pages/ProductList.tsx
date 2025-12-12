@@ -20,24 +20,33 @@ const Wrapper = styled.div`
 const Main = styled.main`
   max-width: 1280px;
   margin: 0 auto;
-  padding: 40px 10px;
+  padding: 40px 20px;
+
+  @media (max-width: 620px) {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.h2`
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 600;
   margin: 10px 0 40px 10px;
   color: #252525;
+
+  @media (max-width: 620px) {
+    margin: 0 0 10px 10px;
+  }
 `;
 
 const SearchRow = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 
   @media (min-width: 640px) {
     flex-direction: row;
+    margin-bottom: 30px;
   }
 `;
 
@@ -70,7 +79,7 @@ const Input = styled.input`
   position: relative;
   color: #bcbcc0;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -102,7 +111,7 @@ const UploadBtn = styled(Link)`
   border-radius: 24px;
   color: #ffffff;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1rem;
   transition: 0.3s;
   display: flex;
   align-items: center;
@@ -116,14 +125,14 @@ const UploadBtn = styled(Link)`
 
 const ProductsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   padding: 0 50px;
   gap: 10px;
 
   @media (min-width: 550px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 780px) {
+  @media (min-width: 680px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -133,6 +142,11 @@ const ProductsGrid = styled.div`
 
   @media (min-width: 1280px) {
     grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media (max-width: 620px) {
+    padding: 0;
+    gap: 0px;
   }
 `;
 
@@ -249,6 +263,14 @@ const SlideImage = styled.img`
   width: 100%;
   height: 200px;
   object-fit: cover;
+
+  @media (max-width: 620px) {
+    height: 150px;
+  }
+
+  @media (max-width: 400px) {
+    height: 120px;
+  }
 `;
 
 const DetailWrapper = styled.div`
@@ -258,7 +280,7 @@ const DetailWrapper = styled.div`
 const Name = styled.h3`
   font-weight: 400;
   color: #252525;
-  font-size: 16px;
+  font-size: 1rem;
   overflow: hidden;
   margin: 0;
   display: -webkit-box;
@@ -267,7 +289,7 @@ const Name = styled.h3`
 `;
 
 const Code = styled.p`
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: #6c6c70;
   margin: 5px 0;
@@ -275,7 +297,7 @@ const Code = styled.p`
 
 const Price = styled.p`
   margin: 20px 0 0;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #e13b30;
   text-align: right;
@@ -286,13 +308,13 @@ const EmptyState = styled.div`
   padding: 40px 0;
 
   p:first-child {
-    font-size: 26px;
+    font-size: 1.8rem;
     color: #252525;
   }
 
   p:last-child {
     margin-top: 8px;
-    font-size: 18px;
+    font-size: 1.25rem;
     color: #252525;
   }
 `;
@@ -367,7 +389,6 @@ const ProductList = () => {
   return (
     <Wrapper>
       <Main>
-        {/* Search */}
         <Title>Product list</Title>
         <SearchRow>
           <SearchWrapper>

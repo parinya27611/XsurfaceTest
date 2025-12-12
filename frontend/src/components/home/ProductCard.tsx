@@ -41,6 +41,9 @@ const Image = styled.img`
   height: 200px;
   object-fit: cover;
   transition: transform 0.3s;
+  @media (max-width: 768px) {
+    height: 177px;
+  }
 `;
 
 const ImgDeal = styled.img`
@@ -64,7 +67,7 @@ const GroupImgSquare = styled.div`
     position: absolute;
     top: 0;
     font-weight: 500;
-    font-size: 10px;
+    font-size: 0.65rem;
     width: 100%;
     color: #ffffff;
     text-align: center;
@@ -78,7 +81,7 @@ const DetailWrapper = styled.div`
 const Title = styled.h3`
   font-weight: 600;
   color: #252525;
-  font-size: 16px;
+  font-size: 1rem;
   margin: 0;
 
   div {
@@ -98,7 +101,7 @@ const Title = styled.h3`
 `;
 
 const Code = styled.p`
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: #6c6c70;
   margin: 5px 0;
@@ -114,17 +117,17 @@ const Code = styled.p`
 
 const Type = styled.div`
   font-weight: 400;
-  font-size: 10px;
+  font-size: 0.65rem;
   color: #6c6c70;
 `;
 const Size = styled.div`
   font-weight: 400;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #252525;
 `;
 const Discount = styled.div`
   font-weight: 400;
-  font-size: 10px;
+  font-size: 0.65rem;
   color: #6c6c70;
   text-decoration: line-through;
 `;
@@ -134,12 +137,12 @@ const Price = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 5px 0 0 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   color: #e13b30;
 
   span {
-    font-size: 14px;
+    font-size: 0.87rem;
     font-weight: 400;
     color: #6c6c70;
   }
@@ -147,7 +150,7 @@ const Price = styled.div`
 
 const InStock = styled.div`
   font-weight: 400;
-  font-size: 12px;
+  font-size: 0.75rem;
 
   color: #00990d;
 `;

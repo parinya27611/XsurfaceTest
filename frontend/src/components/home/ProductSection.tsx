@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Slider from "react-slick";
 import type { CustomArrowProps } from "react-slick";
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ interface ProductSectionProps {
 const Wrapper = styled.div<{ $isFlag: boolean }>`
   width: 100%;
   background: ${(p) =>
-    `linear-gradient(${p.$isFlag ? "#252525" : "#BCCCC3"} 58%, #ffffff 50%)`};
+    `linear-gradient(${p.$isFlag ? "#252525" : "#BCCCC3"} 57.8%, #ffffff 50%)`};
   margin: 50px 0;
 `;
 
@@ -30,6 +31,10 @@ const Section = styled.section`
   margin: 0 auto;
   padding: 30px 100px 50px;
   position: relative;
+
+  @media (max-width: 620px) {
+    padding: 20px;
+  }
 `;
 
 const SliderWrapper = styled(SliderComponent)`
@@ -69,48 +74,57 @@ const SliderWrapper = styled(SliderComponent)`
       background: #e13b30;
     }
   }
+
+  @media (max-width: 620px) {
+    .slick-prev {
+      display: none !important;
+    }
+    .slick-next {
+      display: none !important;
+    }
+  }
 `;
 
 const HeaderRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 0 10px 0;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.h2<{ $isFlag: boolean }>`
-  font-size: ${(p) => (!p.$isFlag ? "32px" : "24px")};
+  font-size: ${(p) => (!p.$isFlag ? "2rem" : "1.5rem")};
   font-weight: 400;
-  margin: 0 0 10px 0;
   color: ${(p) => (p.$isFlag ? "#ffffff" : "#252525")};
+  margin: 0px;
 
   &::first-letter {
     color: ${(p) => (p.$isFlag ? "#E13B30" : "inherit")};
   }
   line-height: 50px;
+
+  @media (max-width: 620px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ViewAllLink = styled(Link)<{ $isFlag: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   color: ${(p) => (p.$isFlag ? "#ffffff" : "#E13B30")};
   transition: color 0.2s;
   text-decoration: none;
+  margin-left: auto;
 `;
 
 const SlideItem = styled.div``;
 
 const IconButton = styled.img`
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0px -20px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  margin: -20px -20px 0;
   width: 42px;
   height: 42px;
 `;
@@ -151,20 +165,32 @@ const ProductSection = ({
   viewAllLink,
   flag = "default",
 }: ProductSectionProps) => {
+  const [slidesToShow, setSlidesToShow] = useState(2);
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 760) setSlidesToShow(2);
+      else if (width < 980) setSlidesToShow(3);
+      else if (width < 1200) setSlidesToShow(4);
+      else setSlidesToShow(5);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const settings = {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 5,
+    slidesToShow,
     slidesToScroll: 1,
     arrows: true,
     responsive: [
       {
         breakpoint: 1200,
-        settings: { slidesToShow: 4 },
-      },
-      {
-        breakpoint: 1100,
         settings: { slidesToShow: 4 },
       },
       {
@@ -174,14 +200,6 @@ const ProductSection = ({
       {
         breakpoint: 760,
         settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 520,
-        settings: { slidesToShow: 1 },
-      },
-      {
-        breakpoint: 400,
-        settings: { slidesToShow: 1 },
       },
     ],
     nextArrow: <NextArrow />,
@@ -202,7 +220,7 @@ const ProductSection = ({
           )}
         </HeaderRow>
 
-        <SliderWrapper {...settings}>
+        <SliderWrapper {...settings} key={slidesToShow}>
           {products.map((product) => (
             <SlideItem key={product._id}>
               <ProductCard product={product} />

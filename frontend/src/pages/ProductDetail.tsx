@@ -7,18 +7,30 @@ import { getProductById } from "@/api/products";
 import toast from "react-hot-toast";
 
 const Main = styled.main`
+  flex: 1;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 50px 40px;
 `;
 
 const Grid = styled.div`
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 50px 40px;
+  box-sizing: border-box;
 
   @media (min-width: 1024px) {
     grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 1280px) {
+    max-width: 900px;
   }
 `;
 
@@ -59,6 +71,18 @@ const ThumbButton = styled.button`
     height: 90px;
     object-fit: cover;
     display: block;
+
+    @media (max-width: 1280px) {
+      height: 60px;
+    }
+
+    @media (max-width: 1024px) {
+      height: 110px;
+    }
+
+    @media (max-width: 650px) {
+      height: 90px;
+    }
   }
 
   &:hover img {
@@ -67,6 +91,7 @@ const ThumbButton = styled.button`
 `;
 
 const InfoWrapper = styled.div`
+  padding-top: 50px;
   padding-left: 0;
   position: relative;
 
@@ -76,23 +101,23 @@ const InfoWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 22px;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #252525;
   margin: 30px 0;
 
   @media (min-width: 768px) {
-    font-size: 32px;
+    font-size: 2rem;
   }
 `;
 
 const Code = styled.p`
   color: #6c6c70;
-  font-size: 16px;
+  font-size: 1rem;
 `;
 
 const Price = styled.p`
-  font-size: 42px;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #252525;
 `;
@@ -125,7 +150,7 @@ const ButtonAdd = styled.button`
   border-radius: 24px;
   color: #e13b30;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1rem;
   transition: 0.3s;
   display: flex;
   align-items: center;
@@ -146,7 +171,7 @@ const ButtonBuy = styled.button`
   border-radius: 24px;
   color: #ffffff;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1rem;
   transition: 0.3s;
   display: flex;
   align-items: center;
@@ -156,10 +181,6 @@ const ButtonBuy = styled.button`
   &:hover {
     opacity: 0.7;
   }
-`;
-
-const Wrapper = styled.div`
-  flex: 1;
 `;
 
 const StyledLink = styled(Link)`
@@ -182,7 +203,7 @@ const ButtonBack = styled(ButtonBuy)`
 const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 1rem;
   color: #252525;
   margin-bottom: 25px;
   transition: color 0.2s;
@@ -231,82 +252,78 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <Wrapper>
-        <Main>
-          <Title>Product not found</Title>
-          <ButtonBack>
-            <StyledLink to="/">
-              <ChevronLeft size={22} />
-              Back to Home
-            </StyledLink>
-          </ButtonBack>
-        </Main>
-      </Wrapper>
+      <Main>
+        <Title>Product not found</Title>
+        <ButtonBack>
+          <StyledLink to="/">
+            <ChevronLeft size={22} />
+            Back to Home
+          </StyledLink>
+        </ButtonBack>
+      </Main>
     );
   }
 
   return (
-    <Main>
-      <BackLink to="/product-list">
-        <ChevronLeft size={22} />
-        Back to Products
-      </BackLink>
-      <Grid>
-        <div>
-          <MainImage>
-            <img
-              src={`${API_BASE}${product.images[selectedImage]}`}
-              alt={product.name}
-              loading="lazy"
-            />
-          </MainImage>
+    <Grid>
+      <div>
+        <BackLink to="/product-list">
+          <ChevronLeft size={22} />
+          Back to Products
+        </BackLink>
+        <MainImage>
+          <img
+            src={`${API_BASE}${product.images[selectedImage]}`}
+            alt={product.name}
+            loading="lazy"
+          />
+        </MainImage>
 
-          <ThumbnailGrid>
-            {product.images.map((image, index) => (
-              <ThumbButton
-                key={image + index}
-                type="button"
-                aria-pressed={selectedImage === index}
-                aria-label={`Select image ${index + 1}`}
-                onClick={() => setSelectedImage(index)}
-              >
-                <img
-                  src={`${API_BASE}${image}`}
-                  alt={`${product.name} ${index + 1}`}
-                  loading="lazy"
-                />
-              </ThumbButton>
-            ))}
-          </ThumbnailGrid>
-        </div>
+        <ThumbnailGrid>
+          {product.images.map((image, index) => (
+            <ThumbButton
+              key={image + index}
+              type="button"
+              aria-pressed={selectedImage === index}
+              aria-label={`Select image ${index + 1}`}
+              onClick={() => setSelectedImage(index)}
+            >
+              <img
+                src={`${API_BASE}${image}`}
+                alt={`${product.name} ${index + 1}`}
+                loading="lazy"
+              />
+            </ThumbButton>
+          ))}
+        </ThumbnailGrid>
+      </div>
 
-        <InfoWrapper>
-          <Title>{product.name}</Title>
+      <InfoWrapper>
+        <Title>{product.name}</Title>
 
-          <Code>Code: {product.code}</Code>
+        <Code>Code: {product.code}</Code>
 
-          <Price>฿{product.price.toLocaleString("th-TH")}</Price>
+        <Price>฿{product.price.toLocaleString("th-TH")}</Price>
 
-          {product.description && (
-            <DescriptionWrapper>
-              <h3>Description</h3>
-              <p>{product.description}</p>
-            </DescriptionWrapper>
-          )}
+        {product.description && (
+          <DescriptionWrapper>
+            <h3>Description</h3>
+            <p>{product.description}</p>
+          </DescriptionWrapper>
+        )}
 
-          <ButtonRow>
-            <ButtonAdd type="button" aria-label="Add to cart">
-              <ShoppingCart />
-              เพิ่มไปยังรถเข็น
-            </ButtonAdd>
+        <ButtonRow>
+          <ButtonAdd type="button" aria-label="Add to cart">
+            <ShoppingCart />
+            เพิ่มไปยังรถเข็น
+          </ButtonAdd>
 
-            <ButtonBuy type="button" aria-label="Buy product">
-              ซื้อสินค้า
-            </ButtonBuy>
-          </ButtonRow>
-        </InfoWrapper>
-      </Grid>
-    </Main>
+          <ButtonBuy type="button" aria-label="Buy product">
+            ซื้อสินค้า
+          </ButtonBuy>
+        </ButtonRow>
+      </InfoWrapper>
+    </Grid>
   );
 };
 

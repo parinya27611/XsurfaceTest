@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
 import type { CustomArrowProps } from "react-slick";
@@ -24,6 +25,10 @@ const Section = styled.section`
   margin: 0 auto;
   padding: 50px 100px;
   position: relative;
+
+  @media (max-width: 620px) {
+    padding: 20px;
+  }
 `;
 
 const HeaderRow = styled.div`
@@ -33,7 +38,7 @@ const HeaderRow = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 400;
   margin: 0 0 10px 0;
   color: #252525;
@@ -77,6 +82,15 @@ const SliderWrapper = styled(SliderComponent)`
       background: #e13b30;
     }
   }
+
+  @media (max-width: 620px) {
+    .slick-prev {
+      display: none !important;
+    }
+    .slick-next {
+      display: none !important;
+    }
+  }
 `;
 
 const CardLink = styled(Link)`
@@ -105,6 +119,10 @@ const Image = styled.img`
   height: 130px;
   object-fit: cover;
   transition: transform 0.3s;
+
+  @media (max-width: 620px) {
+    height: 100px;
+  }
 `;
 
 const DetailWrapper = styled.div`
@@ -114,7 +132,7 @@ const DetailWrapper = styled.div`
 const Name = styled.h3`
   font-weight: 400;
   color: #252525;
-  font-size: 12px;
+  font-size: 0.75rem;
   overflow: hidden;
   margin: 0;
   display: -webkit-box;
@@ -124,26 +142,19 @@ const Name = styled.h3`
 
 const Price = styled.p`
   margin-top: 8px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   color: #252525;
 
   span {
-    font-size: 14px;
+    font-size: 0.87rem;
     font-weight: 400;
     color: #6c6c70;
   }
 `;
 
 const IconButton = styled.img`
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0px -20px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  margin: -20px -20px 0;
   width: 42px;
   height: 42px;
 `;
@@ -179,20 +190,32 @@ const PrevArrow = (props: CustomArrowProps) => {
 };
 
 const LastView = ({ title, products = [] }: LastViewProps) => {
+  const [slidesToShow, setSlidesToShow] = useState(6);
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 520) setSlidesToShow(3);
+      else if (width < 980) setSlidesToShow(4);
+      else if (width < 1100) setSlidesToShow(5);
+      else setSlidesToShow(6);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const API_BASE = import.meta.env.VITE_API_BASE;
 
   const settings = {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 6,
+    slidesToShow,
     slidesToScroll: 1,
     arrows: true,
     responsive: [
-      {
-        breakpoint: 1200,
-        settings: { slidesToShow: 6 },
-      },
       {
         breakpoint: 1100,
         settings: { slidesToShow: 5 },
@@ -202,16 +225,8 @@ const LastView = ({ title, products = [] }: LastViewProps) => {
         settings: { slidesToShow: 4 },
       },
       {
-        breakpoint: 760,
-        settings: { slidesToShow: 3 },
-      },
-      {
         breakpoint: 520,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 400,
-        settings: { slidesToShow: 1 },
+        settings: { slidesToShow: 3 },
       },
     ],
     nextArrow: <NextArrow />,
@@ -225,7 +240,7 @@ const LastView = ({ title, products = [] }: LastViewProps) => {
           <Title>{title}</Title>
         </HeaderRow>
 
-        <SliderWrapper {...settings}>
+        <SliderWrapper {...settings} key={slidesToShow}>
           {products.map((product) => (
             <div key={product._id}>
               <CardLink to={`/product-list/${product._id}`}>

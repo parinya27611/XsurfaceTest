@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import type { Category } from "@/types/product";
+import { useState, useEffect } from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SliderComponent = (Slider as any).default ?? Slider;
@@ -10,6 +11,10 @@ const Section = styled.section`
   max-width: 1440px;
   margin: 0 auto;
   padding: 60px 50px 0;
+
+  @media (max-width: 620px) {
+    padding: 20px;
+  }
 `;
 
 const SliderWrapper = styled(SliderComponent)`
@@ -24,7 +29,7 @@ const SliderWrapper = styled(SliderComponent)`
     li button:before {
       opacity: 1 !important;
       color: #d9d9d9;
-      font-size: 14px;
+      font-size: 0.87rem;
     }
 
     li.slick-active button:before {
@@ -51,22 +56,46 @@ const CategoryImage = styled.img`
   border-radius: 16px;
   object-fit: cover;
   transition: all 0.3s;
+
+  @media (max-width: 640px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const CategoryName = styled.p`
   margin: auto 0 0 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   transition: color 0.3s;
   color: #000000;
 `;
 
 const CategoryMenu = ({ categories = [] }: { categories?: Category[] }) => {
+  const [slidesToShow, setSlidesToShow] = useState(10);
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 400) setSlidesToShow(3);
+      else if (width < 520) setSlidesToShow(4);
+      else if (width < 780) setSlidesToShow(5);
+      else if (width < 900) setSlidesToShow(6);
+      else if (width < 1020) setSlidesToShow(7);
+      else if (width < 1140) setSlidesToShow(8);
+      else setSlidesToShow(10);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const settings = {
     dots: true,
     infinite: false,
     speed: 500,
-    slidesToShow: 10,
+    slidesToShow,
     slidesToScroll: 1,
     arrows: false,
     responsive: [
@@ -87,37 +116,34 @@ const CategoryMenu = ({ categories = [] }: { categories?: Category[] }) => {
         settings: { slidesToShow: 5 },
       },
       {
-        breakpoint: 640,
+        breakpoint: 520,
         settings: { slidesToShow: 4 },
       },
       {
-        breakpoint: 520,
-        settings: { slidesToShow: 3 },
-      },
-      {
         breakpoint: 400,
-        settings: { slidesToShow: 2 },
+        settings: { slidesToShow: 3 },
       },
     ],
   };
-
   return (
-    <Section aria-label="Category menu">
-      <SliderWrapper {...settings}>
-        {categories.map((category) => (
-          <div key={category.id}>
-            <CategoryLink to={`/`}>
-              <CategoryImage
-                src={category.image}
-                alt={category.name}
-                loading="lazy"
-              />
-              <CategoryName>{category.name}</CategoryName>
-            </CategoryLink>
-          </div>
-        ))}
-      </SliderWrapper>
-    </Section>
+    <>
+      <Section aria-label="Category menu" className="slider-container">
+        <SliderWrapper {...settings}>
+          {categories.map((category) => (
+            <div key={category.id}>
+              <CategoryLink to={`/`}>
+                <CategoryImage
+                  src={category.image}
+                  alt={category.name}
+                  loading="lazy"
+                />
+                <CategoryName>{category.name}</CategoryName>
+              </CategoryLink>
+            </div>
+          ))}
+        </SliderWrapper>
+      </Section>
+    </>
   );
 };
 

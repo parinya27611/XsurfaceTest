@@ -11,13 +11,18 @@ const Main = styled.main`
   max-width: 1240px;
   width: 100%;
   margin: 0 auto;
-  padding: 40px 10px;
+  padding: 40px 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 620px) {
+    padding: 20px;
+  }
 `;
 
 const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  font-size: 16px;
+  font-size: 1rem;
   color: #252525;
   margin-bottom: 25px;
   transition: color 0.2s;
@@ -27,13 +32,21 @@ const BackLink = styled(Link)`
   &:hover {
     color: #bfbfbf;
   }
+
+  @media (max-width: 620px) {
+    margin-bottom: 0px;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 600;
   color: #252525;
   margin-bottom: 30px;
+
+  @media (max-width: 620px) {
+    margin-bottom: 15px;
+  }
 `;
 
 const Form = styled.form`
@@ -42,11 +55,15 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @media (max-width: 620px) {
+    gap: 10px;
+  }
 `;
 
 const BrowseLabel = styled.label`
   font-weight: 300;
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.4px;
   text-align: center;
   color: #6c6c70;
@@ -54,7 +71,7 @@ const BrowseLabel = styled.label`
 
 const RequestText = styled.p`
   font-weight: 300;
-  font-size: 12px;
+  font-size: 0.75rem;
   text-align: right;
   color: #6c6c70;
   margin: 10px 0 0;
@@ -62,11 +79,20 @@ const RequestText = styled.p`
 
 const PreviewGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 0 auto;
+  justify-items: center;
+  width: 100%;
 
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(6, 1fr);
+  @media (max-width: 620px) {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 10px;
+  }
+
+  @media (max-width: 400px) {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
   }
 `;
 
@@ -74,6 +100,16 @@ const PreviewItem = styled.div`
   position: relative;
   width: 120px;
   height: 120px;
+
+  @media (max-width: 620px) {
+    width: 100px;
+    height: 100px;
+  }
+
+  @media (max-width: 400px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const PreviewImage = styled.img`
@@ -111,7 +147,7 @@ const Field = styled.div`
 
 const FieldLabel = styled.label`
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   color: #252525;
 `;
 
@@ -135,6 +171,14 @@ const DropZone = styled.div<{ $dragOver: boolean }>`
       : css`
           border-color: #d9d9d9;
         `}
+
+  @media (max-width: 620px) {
+    height: 250px;
+  }
+
+  @media (max-width: 400px) {
+    height: 200px;
+  }
 `;
 
 const ImagePlus = styled.img`
@@ -143,7 +187,7 @@ const ImagePlus = styled.img`
 `;
 const DragDrop = styled.p`
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.87rem;
   letter-spacing: 0.4px;
   text-align: center;
   color: #6b7280;
@@ -171,7 +215,7 @@ const Input = styled.input`
   opacity: 1;
   border-radius: 24px;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   outline: none;
 
   &:focus {
@@ -181,9 +225,13 @@ const Input = styled.input`
   &::placeholder {
     color: #d9d9d9;
     opacity: 1;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 400;
     transition: color 0.2s ease;
+  }
+
+  @media (max-width: 400px) {
+    height: 45px;
   }
 `;
 
@@ -207,10 +255,14 @@ const UploadButton = styled.button`
   color: #ffffff;
   cursor: pointer;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
 
   &:hover {
     opacity: 0.8;
+  }
+
+  @media (max-width: 400px) {
+    height: 45px;
   }
 `;
 
@@ -227,10 +279,14 @@ const SecondaryButton = styled(Link)`
   text-decoration: none;
   color: #e13b30;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
 
   &:hover {
     background: #f9f9f9;
+  }
+
+  @media (max-width: 400px) {
+    height: 45px;
   }
 `;
 
@@ -260,7 +316,7 @@ const UploadProduct = () => {
     if (!files) return;
 
     const allowed = ["image/jpeg", "image/png"];
-    const MAX_SIZE = 50 * 1024 * 1024; // 50MB
+    const MAX_SIZE = 50 * 1024 * 1024;
 
     const fileArray = Array.from(files);
 
@@ -380,8 +436,6 @@ const UploadProduct = () => {
         const data = await getProductById(id);
         if (data) {
           setFormData(data);
-          // ensure existing images from server are shown via formData.images
-          // images state is used only for newly selected files (data-URIs)
         }
       } catch (error: unknown) {
         const message =
@@ -436,7 +490,6 @@ const UploadProduct = () => {
             </BrowseLabel>
           </DropZone>
           <RequestText>
-            {/* Image upload ({images.length}/6) */}
             Image upload ({images.length + (formData.images?.length || 0)}/6)
           </RequestText>
         </Field>

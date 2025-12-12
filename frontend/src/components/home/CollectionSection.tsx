@@ -28,6 +28,14 @@ const Section = styled.section`
   margin: 0 auto;
   padding: 30px 100px 50px;
   position: relative;
+
+  @media (max-width: 768px) {
+    padding: 50px;
+  }
+
+  @media (max-width: 520px) {
+    padding: 20px;
+  }
 `;
 
 const SliderWrapper = styled(SliderComponent)`
@@ -67,22 +75,36 @@ const SliderWrapper = styled(SliderComponent)`
       background: #e13b30;
     }
   }
+
+  @media (max-width: 620px) {
+    .slick-prev {
+      display: none !important;
+    }
+    .slick-next {
+      display: none !important;
+    }
+  }
 `;
 
 const HeaderRow = styled.div`
   display: flex;
   align-items: start;
   justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 0 0 60px 60px;
+
+  @media (max-width: 768px) {
+    margin: 0 0 10px 0;
+  }
 `;
 
 const Title = styled.h2`
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 400;
-  margin: 0 0 60px 60px;
   color: #252525;
 
   div {
-    font-size: 16px;
+    font-size: 1rem;
     color: #6c6c70;
     margin-top: 20px;
     width: 257px;
@@ -92,22 +114,21 @@ const Title = styled.h2`
 const ViewAllLink = styled(Link)`
   display: flex;
   align-items: center;
+  margin-left: auto;
   gap: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   color: #e13b30;
   transition: color 0.2s;
   text-decoration: none;
 `;
 
-const CollectionContainer = styled.div``;
-
 const CollectionCard = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     flex-direction: row;
   }
 `;
@@ -176,8 +197,10 @@ const DetailWrapper = styled.div`
 const Name = styled.h3`
   font-weight: 600;
   color: #252525;
-  font-size: 16px;
+  font-size: 1rem;
   margin: 0;
+  display: flex;
+  justify-content: space-between;
 
   div {
     overflow: hidden;
@@ -186,9 +209,6 @@ const Name = styled.h3`
     -webkit-box-orient: vertical;
   }
 
-  display: flex;
-  justify-content: space-between;
-
   img {
     width: 20px;
     height: 20px;
@@ -196,7 +216,7 @@ const Name = styled.h3`
 `;
 
 const Code = styled.p`
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: #6c6c70;
   margin: 5px 0;
@@ -212,12 +232,13 @@ const Code = styled.p`
 
 const Type = styled.div`
   font-weight: 400;
-  font-size: 10px;
+  font-size: 0.65rem;
   color: #6c6c70;
 `;
+
 const Size = styled.div`
   font-weight: 400;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #252525;
 `;
 
@@ -226,31 +247,21 @@ const Price = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 5px 0 0 0;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   color: #252525;
 
   span {
-    font-size: 14px;
+    font-size: 0.87rem;
     font-weight: 400;
     color: #6c6c70;
   }
 `;
 
-const IconArrow = styled.img`
+const IconButton = styled.img`
+  margin: 0px -20px;
   width: 42px;
   height: 42px;
-`;
-
-const IconButton = styled.button`
-  background: transparent;
-  border: none;
-  padding: 0;
-  margin: 0px -30px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const NextArrow = (props: CustomArrowProps) => {
@@ -261,9 +272,10 @@ const NextArrow = (props: CustomArrowProps) => {
       className={className}
       style={{ ...style, display: "block" }}
       onClick={onClick}
-    >
-      <IconArrow src={next} alt="" aria-hidden="true" />
-    </IconButton>
+      src={next}
+      alt=""
+      aria-hidden="true"
+    ></IconButton>
   );
 };
 
@@ -275,9 +287,10 @@ const PrevArrow = (props: CustomArrowProps) => {
       className={className}
       style={{ ...style, display: "block" }}
       onClick={onClick}
-    >
-      <IconArrow src={back} alt="" aria-hidden="true" />
-    </IconButton>
+      src={back}
+      alt=""
+      aria-hidden="true"
+    ></IconButton>
   );
 };
 
@@ -320,7 +333,7 @@ const CollectionSection = ({
         </HeaderRow>
         <SliderWrapper {...settings}>
           {collections.map((collection) => (
-            <CollectionContainer key={collection.id}>
+            <div key={collection.id}>
               <CollectionCard>
                 <ImageWrapper>
                   <img
@@ -375,7 +388,7 @@ const CollectionSection = ({
                   </ProductsGrid>
                 </DetailsWrapper>
               </CollectionCard>
-            </CollectionContainer>
+            </div>
           ))}
         </SliderWrapper>
       </Section>

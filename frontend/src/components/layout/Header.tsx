@@ -39,6 +39,10 @@ const HeaderRow = styled.div`
   justify-content: space-between;
   height: 100%;
   gap: 16px;
+
+  @media (max-width: 620px) {
+    gap: 6px;
+  }
 `;
 
 const LogoLink = styled(Link)`
@@ -50,6 +54,13 @@ const LogoLink = styled(Link)`
     height: 30px;
     width: auto;
   }
+
+  @media (max-width: 620px) {
+    img {
+      height: 20px;
+      width: auto;
+    }
+  }
 `;
 
 const SearchWrapper = styled.div`
@@ -60,6 +71,11 @@ const SearchWrapper = styled.div`
   margin-right: 10px;
   align-items: center;
   position: relative;
+
+  @media (max-width: 620px) {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 `;
 
 const IconSearch = styled.img`
@@ -71,6 +87,10 @@ const IconSearch = styled.img`
   cursor: pointer;
   width: 16px;
   height: 16px;
+
+  @media (max-width: 620px) {
+    left: 14px;
+  }
 `;
 
 const Input = styled.input`
@@ -83,7 +103,7 @@ const Input = styled.input`
   position: relative;
   color: #bcbcc0;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -104,6 +124,10 @@ const Input = styled.input`
       color: #ccc;
     }
   }
+
+  @media (max-width: 620px) {
+    padding-left: 36px;
+  }
 `;
 
 const ButtonSearch = styled.button`
@@ -117,7 +141,7 @@ const ButtonSearch = styled.button`
   border: none;
   border-radius: 16px;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #e13b30;
   cursor: pointer;
   display: flex;
@@ -131,6 +155,13 @@ const ButtonSearch = styled.button`
 
   &:hover {
     background: #e9e9e9ff;
+  }
+
+  @media (max-width: 420px) {
+    width: 45px;
+    span {
+      display: none;
+    }
   }
 `;
 
@@ -156,23 +187,27 @@ const MobileNav = styled.nav`
   background-color: #ffffff;
   padding: 20px;
   box-sizing: border-box;
+  box-shadow: 0px 4px 10px 0px #0000001a;
 
   a {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
-    font-size: 16px;
+    font-size: 1rem;
     padding: 10px 15px;
     margin-bottom: 5px;
     box-sizing: border-box;
-
     img {
       margin-right: 10px;
     }
 
     &:hover {
       background-color: #f3f1f2;
+    }
+
+    @media (max-width: 420px) {
+      padding: 5px 10px;
     }
   }
 
@@ -187,7 +222,7 @@ const MobileNav = styled.nav`
 `;
 
 const NavIcon = styled(Link)`
-  font-size: 14px;
+  font-size: 0.87rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -279,7 +314,7 @@ const Header = () => {
             />
             <ButtonSearch type="button">
               <img src={searchImage} alt="" aria-hidden="true" />
-              ค้นหาด้วยรูป
+              <span>ค้นหาด้วยรูป</span>
             </ButtonSearch>
           </SearchWrapper>
           <DesktopNav role="navigation" aria-label="Main navigation">

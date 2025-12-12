@@ -14,14 +14,14 @@ const Content = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 44px;
+  font-size: 2.5rem;
   font-weight: bold;
   color: #252525;
 `;
 
 const Subtitle = styled.p`
   margin-bottom: 30px;
-  font-size: 26px;
+  font-size: 1.7rem;
   color: #252525;
 `;
 
@@ -34,7 +34,7 @@ const HomeLink = styled(Link)`
   border-radius: 24px;
   color: #ffffff;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1rem;
   transition: 0.3s;
   display: flex;
   align-items: center;
