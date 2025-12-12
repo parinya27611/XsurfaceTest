@@ -121,8 +121,6 @@ const ViewAllLink = styled(Link)<{ $isFlag: boolean }>`
   margin-left: auto;
 `;
 
-const SlideItem = styled.div``;
-
 const IconButton = styled.img`
   margin: -20px -20px 0;
   width: 42px;
@@ -222,9 +220,9 @@ const ProductSection = ({
 
         <SliderWrapper {...settings} key={slidesToShow}>
           {products.map((product) => (
-            <SlideItem key={product._id}>
+            <div key={product._id}>
               <ProductCard product={product} />
-            </SlideItem>
+            </div>
           ))}
         </SliderWrapper>
       </Section>
