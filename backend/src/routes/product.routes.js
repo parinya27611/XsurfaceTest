@@ -15,9 +15,31 @@ router.get("/", getProducts);
 
 router.get("/:id", getProductById);
 
-router.post("/", upload.array("images", 6), createProduct);
+router.post(
+  "/",
+  (req, res, next) => {
+    upload.array("images", 6)(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
+      next();
+    });
+  },
+  createProduct
+);
 
-router.put("/:id", upload.array("images", 6), updateProduct);
+router.put(
+  "/:id",
+  (req, res, next) => {
+    upload.array("images", 6)(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
+      next();
+    });
+  },
+  updateProduct
+);
 
 router.delete("/:id", deleteProduct);
 

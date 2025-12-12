@@ -10,6 +10,16 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (!allowedTypes.includes(file.mimetype)) {
+      return cb(new Error(`Invalid file type: ${file.mimetype}`), false);
+    }
+    cb(null, true);
+  },
+});
 
 export default upload;
