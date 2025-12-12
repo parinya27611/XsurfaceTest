@@ -1,10 +1,13 @@
 import Product from "../models/product.model.js";
-import path from "path";
-import { fileURLToPath } from "url";
-import fs from "fs";
+import cloudinary from "../config/cloudinary.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+function getPublicId(url) {
+  const parts = url.split("/");
+  const file = parts.pop();
+  const folder = parts.pop();
+  const publicId = `${folder}/${file.split(".")[0]}`;
+  return publicId;
+}
 
 // GET ALL
 export async function getProducts(req, res) {
@@ -46,15 +49,16 @@ export async function createProduct(req, res) {
     if (!Number.isFinite(priceNumber))
       return res.status(400).json({ error: "Invalid price" });
 
-    const imagePaths = req.files?.map((file) => `/uploads/${file.filename}`) || [];
-    if (imagePaths.length > 6)
+    const imageUrls = req.files?.map((file) => file.path) || [];
+
+    if (imageUrls.length > 6)
       return res.status(400).json({ error: "Maximum 6 images allowed" });
 
     const product = await Product.create({
       name,
       code,
       price: priceNumber,
-      images: imagePaths,
+      images: imageUrls,
     });
 
     res.status(201).json(product);
@@ -70,44 +74,42 @@ export async function updateProduct(req, res) {
     const productId = req.params.id;
     const { name, code, price, removedImages: removedImagesStr } = req.body;
 
-
     if (!name) return res.status(400).json({ error: "Name is required" });
     if (!code) return res.status(400).json({ error: "Code is required" });
     if (!price) return res.status(400).json({ error: "Price is required" });
-    
+
     const removedImages = removedImagesStr ? JSON.parse(removedImagesStr) : [];
 
     const priceNumber = Number(price);
     if (!Number.isFinite(priceNumber))
       return res.status(400).json({ error: "Invalid price" });
 
-    const newImages = req.files?.map((file) => `/uploads/${file.filename}`) || [];
+    const newImageUrls = req.files?.map((file) => file.path) || [];
 
-    // Load existing product
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    // Remove selected images from disk and from existing images array
-    let existingImages = Array.isArray(product.images) ? [...product.images] : [];
-    for (const img of removedImages) {
-      const filePath = path.join(__dirname, "../../uploads", path.basename(img));
+    for (const imgUrl of removedImages) {
+      const publicId = getPublicId(imgUrl);
       try {
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      } catch (e) {
-        console.warn("Failed to delete image file:", filePath, e?.message || e);
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.warn("Cloudinary delete error:", publicId, err.message);
       }
-      existingImages = existingImages.filter((p) => p !== img);
     }
 
-    // Merge existing images (after removal) with newly uploaded ones
-    const mergedImages = [...existingImages, ...newImages];
+    const remainingImages = product.images.filter(
+      (img) => !removedImages.includes(img)
+    );
+
+    const mergedImages = [...remainingImages, ...newImageUrls];
+
     if (mergedImages.length > 6)
       return res.status(400).json({ error: "Maximum 6 images allowed" });
 
-    // Update fields
-    product.name = name ?? product.name;
-    product.code = code ?? product.code;
-    product.price = price !== undefined ? priceNumber : product.price;
+    product.name = name;
+    product.code = code;
+    product.price = priceNumber;
     product.images = mergedImages;
 
     const updated = await product.save();
@@ -124,12 +126,12 @@ export async function deleteProduct(req, res) {
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    for (const img of product.images || []) {
-      const filePath = path.join(__dirname, "../../uploads", path.basename(img));
+    for (const imgUrl of product.images || []) {
+      const publicId = getPublicId(imgUrl);
       try {
-        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-      } catch (e) {
-        console.warn("Failed to delete image file:", filePath, e?.message || e);
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.warn("Failed delete:", publicId, err.message);
       }
     }
 
