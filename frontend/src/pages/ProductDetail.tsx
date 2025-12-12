@@ -5,19 +5,19 @@ import styled from "styled-components";
 import type { Product } from "@/types/product";
 import { getProductById } from "@/api/products";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
 const Main = styled.main`
   flex: 1;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 50px 40px;
 `;
 
 const Grid = styled.div`
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
   max-width: 1200px;
   width: 100%;
@@ -25,12 +25,9 @@ const Grid = styled.div`
   padding: 50px 40px;
   box-sizing: border-box;
 
-  @media (min-width: 1024px) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (max-width: 1280px) {
-    max-width: 900px;
+  @media (max-width: 620px) {
+    grid-template-columns: 1fr;
+    padding: 20px 20px 40px;
   }
 `;
 
@@ -72,16 +69,16 @@ const ThumbButton = styled.button`
     object-fit: cover;
     display: block;
 
-    @media (max-width: 1280px) {
+    @media (max-width: 920px) {
       height: 60px;
     }
 
-    @media (max-width: 1024px) {
-      height: 110px;
+    @media (max-width: 620px) {
+      height: 80px;
     }
 
-    @media (max-width: 650px) {
-      height: 90px;
+    @media (max-width: 400px) {
+      height: 40px;
     }
   }
 
@@ -92,11 +89,15 @@ const ThumbButton = styled.button`
 
 const InfoWrapper = styled.div`
   padding-top: 50px;
-  padding-left: 0;
+  padding-left: 10px;
   position: relative;
 
   @media (min-width: 1024px) {
     padding-left: 40px;
+  }
+
+  @media (max-width: 620px) {
+    padding-top: 0px;
   }
 `;
 
@@ -109,6 +110,10 @@ const Title = styled.h1`
   @media (min-width: 768px) {
     font-size: 2rem;
   }
+
+  @media (max-width: 920px) {
+    margin: 15px 0;
+  }
 `;
 
 const Code = styled.p`
@@ -120,6 +125,10 @@ const Price = styled.p`
   font-size: 2.5rem;
   font-weight: 700;
   color: #252525;
+
+  @media (max-width: 920px) {
+    margin: 15px 0;
+  }
 `;
 
 const DescriptionWrapper = styled.div`
@@ -139,10 +148,11 @@ const ButtonRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 `;
 
 const ButtonAdd = styled.button`
-  width: 48%;
+  width: 100%;
   height: 56px;
   border: 1px solid #e13b30;
   cursor: pointer;
@@ -156,14 +166,19 @@ const ButtonAdd = styled.button`
   align-items: center;
   justify-content: center;
   gap: 10px;
+  white-space: nowrap;
 
   &:hover {
     opacity: 0.7;
   }
+
+  @media (max-width: 920px) {
+    height: 45px;
+  }
 `;
 
 const ButtonBuy = styled.button`
-  width: 48%;
+  width: 100%;
   height: 56px;
   border: none;
   cursor: pointer;
@@ -180,6 +195,10 @@ const ButtonBuy = styled.button`
 
   &:hover {
     opacity: 0.7;
+  }
+
+  @media (max-width: 920px) {
+    height: 45px;
   }
 `;
 
@@ -240,88 +259,84 @@ const ProductDetail = () => {
   }, [id]);
 
   const [selectedImage, setSelectedImage] = useState(0);
-  if (loading) {
-    return (
-      <Main>
-        <p>กำลังโหลดสินค้า...</p>
-      </Main>
-    );
-  }
-
-  if (!product) {
-    return (
-      <Main>
-        <Title>Product not found</Title>
-        <ButtonBack>
-          <StyledLink to="/">
-            <ChevronLeft size={22} />
-            Back to Home
-          </StyledLink>
-        </ButtonBack>
-      </Main>
-    );
-  }
-
   return (
-    <Grid>
-      <div>
-        <BackLink to="/product-list">
-          <ChevronLeft size={22} />
-          Back to Products
-        </BackLink>
-        <MainImage>
-          <img
-            src={product.images[selectedImage]}
-            alt={product.name}
-            loading="lazy"
-          />
-        </MainImage>
+    <Main>
+      {loading && <Loading />}
 
-        <ThumbnailGrid>
-          {product.images.map((image, index) => (
-            <ThumbButton
-              key={image + index}
-              type="button"
-              aria-pressed={selectedImage === index}
-              aria-label={`Select image ${index + 1}`}
-              onClick={() => setSelectedImage(index)}
-            >
+      {product ? (
+        <Grid>
+          <div>
+            <BackLink to="/product-list">
+              <ChevronLeft size={22} />
+              Back to Products
+            </BackLink>
+            <MainImage>
               <img
-                src={image}
-                alt={`${product.name} ${index + 1}`}
+                src={product.images[selectedImage]}
+                alt={product.name}
                 loading="lazy"
               />
-            </ThumbButton>
-          ))}
-        </ThumbnailGrid>
-      </div>
+            </MainImage>
 
-      <InfoWrapper>
-        <Title>{product.name}</Title>
+            <ThumbnailGrid>
+              {product.images.map((image, index) => (
+                <ThumbButton
+                  key={image + index}
+                  type="button"
+                  aria-pressed={selectedImage === index}
+                  aria-label={`Select image ${index + 1}`}
+                  onClick={() => setSelectedImage(index)}
+                >
+                  <img
+                    src={image}
+                    alt={`${product.name} ${index + 1}`}
+                    loading="lazy"
+                  />
+                </ThumbButton>
+              ))}
+            </ThumbnailGrid>
+          </div>
 
-        <Code>Code: {product.code}</Code>
+          <InfoWrapper>
+            <Title>{product.name}</Title>
 
-        <Price>฿{product.price.toLocaleString("th-TH")}</Price>
+            <Code>Code: {product.code}</Code>
 
-        {product.description && (
-          <DescriptionWrapper>
-            <h3>Description</h3>
-            <p>{product.description}</p>
-          </DescriptionWrapper>
-        )}
+            <Price>฿{product.price.toLocaleString("th-TH")}</Price>
 
-        <ButtonRow>
-          <ButtonAdd type="button" aria-label="Add to cart">
-            <ShoppingCart />
-            เพิ่มไปยังรถเข็น
-          </ButtonAdd>
+            {product.description && (
+              <DescriptionWrapper>
+                <h3>Description</h3>
+                <p>{product.description}</p>
+              </DescriptionWrapper>
+            )}
 
-          <ButtonBuy type="button" aria-label="Buy product">
-            ซื้อสินค้า
-          </ButtonBuy>
-        </ButtonRow>
-      </InfoWrapper>
-    </Grid>
+            <ButtonRow>
+              <ButtonAdd type="button" aria-label="Add to cart">
+                <ShoppingCart />
+                เพิ่มไปยังรถเข็น
+              </ButtonAdd>
+
+              <ButtonBuy type="button" aria-label="Buy product">
+                ซื้อสินค้า
+              </ButtonBuy>
+            </ButtonRow>
+          </InfoWrapper>
+        </Grid>
+      ) : (
+        !loading && (
+          <>
+            <Title>Product not found</Title>
+            <ButtonBack>
+              <StyledLink to="/">
+                <ChevronLeft size={22} />
+                Back to Home
+              </StyledLink>
+            </ButtonBack>
+          </>
+        )
+      )}
+    </Main>
   );
 };
 

@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import { getProducts, deleteProduct } from "@/api/products";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SliderComponent = (Slider as any).default ?? Slider;
@@ -351,6 +352,7 @@ const ProductList = () => {
   };
 
   const handleDelete = async (productId: string) => {
+    setLoading(true);
     try {
       const confirmed = window.confirm(
         "Are you sure you want to delete this product?"
@@ -363,6 +365,8 @@ const ProductList = () => {
       const message =
         error instanceof Error ? error.message : "Failed to deleted product";
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -387,6 +391,7 @@ const ProductList = () => {
 
   return (
     <Wrapper>
+      {loading && <Loading />}
       <Main>
         <Title>Product list</Title>
         <SearchRow>
@@ -452,13 +457,13 @@ const ProductList = () => {
               </Card>
             ))}
           </ProductsGrid>
-        ) : loading ? (
-          <p>กำลังโหลดสินค้า...</p>
         ) : (
-          <EmptyState>
-            <p>No products found</p>
-            <p>Try adjusting your search or filter criteria</p>
-          </EmptyState>
+          !loading && (
+            <EmptyState>
+              <p>No products found</p>
+              <p>Try adjusting your search or filter criteria</p>
+            </EmptyState>
+          )
         )}
       </Main>
     </Wrapper>

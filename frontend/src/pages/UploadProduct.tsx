@@ -6,6 +6,7 @@ import styled, { css } from "styled-components";
 import toast from "react-hot-toast";
 import { getProductById, createProduct, updateProduct } from "@/api/products";
 import type { ProductFormData } from "@/types/product";
+import Loading from "@/components/Loading";
 
 const Main = styled.main`
   max-width: 1240px;
@@ -309,6 +310,7 @@ const UploadProduct = () => {
   });
 
   const [dragOver, setDragOver] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleImageUpload = (files: FileList | null) => {
     if (!files) return;
@@ -409,6 +411,7 @@ const UploadProduct = () => {
     fd.append("price", priceNumber.toString());
     fd.append("removedImages", JSON.stringify(removeImages));
     formImages.forEach((file) => fd.append("images", file));
+    setLoading(true);
     try {
       if (id) {
         await updateProduct(id, fd);
@@ -422,6 +425,8 @@ const UploadProduct = () => {
       const message =
         error instanceof Error ? error.message : "Failed to submit product";
       toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -430,6 +435,7 @@ const UploadProduct = () => {
   useEffect(() => {
     if (!id) return;
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await getProductById(id);
         if (data) {
@@ -439,6 +445,8 @@ const UploadProduct = () => {
         const message =
           error instanceof Error ? error.message : "Failed to fetch product";
         toast.error(message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -446,6 +454,7 @@ const UploadProduct = () => {
 
   return (
     <Main>
+      {loading && <Loading />}
       <BackLink to="/product-list">
         <ChevronLeft />
         Back to Products

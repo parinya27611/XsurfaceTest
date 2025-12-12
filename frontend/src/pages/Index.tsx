@@ -14,11 +14,15 @@ import { shop } from "@/constants/shop";
 import { getProducts } from "@/api/products";
 import type { Product } from "@/types/product";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
 const Index = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await getProducts();
         setProducts(data);
@@ -26,6 +30,8 @@ const Index = () => {
         const message =
           error instanceof Error ? error.message : "Failed to fetch products";
         toast.error(message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -33,6 +39,7 @@ const Index = () => {
 
   return (
     <main>
+      {loading && <Loading />}
       <Banner bannerImages={bannerImages} />
       <CategoryMenu categories={categories} />
       <LastView title="ดูล่าสุด" products={products.slice(0, 8)} />
